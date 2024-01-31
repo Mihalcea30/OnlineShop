@@ -1,0 +1,14 @@
+namespace Backend.Models
+{
+  public class Client
+  {
+    public int client_Id { get; set; }
+    public string client_Name { get; set; }
+    public string Address { get; set; }
+
+    public Client_Account? Account { get; set; }
+    public ICollection<Order> Orders { get; set; } = new List<Order>();
+
+
+  }
+}
