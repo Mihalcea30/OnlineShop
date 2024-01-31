@@ -3,10 +3,12 @@ using Backend.Models;
 using System.Collections.Generic;
 using System.Reflection.Emit;
 using Backend.Migrations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Data
 {
-  public class BackendContext :DbContext
+  public class BackendContext :IdentityDbContext
   {
     public DbSet<Client> Clients { get; set; }
     public DbSet<Product> Products { get; set; }
@@ -16,6 +18,10 @@ namespace Backend.Data
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+      modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
+      modelBuilder.Entity<IdentityUserRole<string>>().HasKey((c => new { c.UserId, c.RoleId }));
+      modelBuilder.Entity<IdentityUserToken<string>>().HasNoKey();
+      
       modelBuilder.Entity<Client>()
         .HasKey(c => c.client_Id);
       modelBuilder.Entity<Product>()

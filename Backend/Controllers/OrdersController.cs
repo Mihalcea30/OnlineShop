@@ -1,13 +1,16 @@
 using Backend.Models;
 using Backend.Services.OrderService;
 using Backend.Services.ProductService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.Controllers
 {
+  
   [Route("api/[controller]")]
   [ApiController]
+  
   public class OrdersController : ControllerBase
   {
     private IOrderService _orderService;
@@ -16,7 +19,7 @@ namespace Backend.Controllers
       _orderService = orderService;
 
     }
-    [HttpGet]
+    [HttpGet, Authorize]
     public IEnumerable<Order> GetOrders()
     {
       return _orderService.GetOrders();
