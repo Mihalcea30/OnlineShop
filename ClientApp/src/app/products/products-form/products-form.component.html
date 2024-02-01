@@ -1,0 +1,35 @@
+<form #form="ngForm" (submit)="onSubmit(form)">
+  <input type="hidden" name = "productId" [value]="service.formData.product_Id">
+  <div class = "mb-3">
+    <label>Product </label>
+    <input class = "form-control form-control-lg" placeholder="Name of Product"
+           #product_Name = "ngModel" name = "product_Name"
+    [(ngModel)]="service.formData.product_Name">
+  </div>
+  <div class = "mb-3">
+    <label>Seller </label>
+    <input class = "form-control form-control-lg" placeholder="SellerId"
+           #product_Name = "ngModel" name = "seller_Id"
+           [(ngModel)]="service.formData.sellerId">
+  </div>
+  <div class = row>
+  <div class = "mb-3 col-6">
+    <label>Price </label>
+    <input class = "form-control form-control-lg" placeholder="Price"
+           #price = "ngModel" name = "price"
+           [(ngModel)]="service.formData.price">
+  </div>
+
+  <div class = "mb-3 col-6">
+    <label>Units </label>
+    <input class = "form-control form-control-lg" placeholder="Number of units"
+           #product_Name = "ngModel" name = "units"
+           [(ngModel)]="service.formData.units">
+  </div>
+  </div>
+  <div class="d-grid">
+    <button class="btn btn-lg btn-success" type="submit">
+      Submit
+    </button>
+  </div>
+</form>
