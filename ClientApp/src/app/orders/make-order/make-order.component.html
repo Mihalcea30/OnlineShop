@@ -1,0 +1,19 @@
+<div>
+  <h4 class="d-flex justify-content-between align-items-center mb-3">
+    <span class="text-primary">Ordered</span>
+    <span class="badge bg-primary rounded-pill">3</span>
+  </h4>
+  <ul class="list-group mb-3">
+    <li class="list-group-item d-flex justify-content-between lh-sm" *ngFor="let pd of service.orderlist">
+      <div>
+        <h6 class="my-0">ProductId:  {{ pd.productId }}</h6>
+        <small class="text-body-secondary">ClientId:  {{pd.clientId}}</small>
+      </div>
+    </li>
+
+    <li class="list-group-item d-flex justify-content-between">
+      <span>Total </span>
+      <strong></strong>
+    </li>
+  </ul>
+</div>

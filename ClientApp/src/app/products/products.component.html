@@ -1,3 +1,8 @@
+
+<div class="container">
+  <div class = "row">
+    <div class = "col-8 offset-2">
+
 <div class = "bg-body-secondary text-center py-5 rounded-2">
   <h1 class="display-6 fw-bold">Products</h1>
 </div>
@@ -14,13 +19,15 @@
         <div class = "flex-grow-1 mouse-hover"
         (click)="populateForm(pd)">
         <div class="fw-bold">{{pd.product_Name}}</div>
-        <div class="fw-bold">{{pd.price}}</div>
+        <div class="fw-bold">{{pd.price}} lei</div>
         </div>
         <span class = "text-secondary">
         <i class="fa-solid fa-trash-can" (click)="onDelete(pd.product_Id)"></i>
         </span>
-
       </li>
     </ul>
   </div>
 </div>
+</div>
+  </div>
+</div>-->

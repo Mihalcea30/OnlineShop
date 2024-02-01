@@ -19,7 +19,7 @@ namespace Backend.Controllers
       _orderService = orderService;
 
     }
-    [HttpGet, Authorize]
+    [HttpGet]
     public IEnumerable<Order> GetOrders()
     {
       return _orderService.GetOrders();

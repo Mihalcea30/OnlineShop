@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import {ProductsService} from "../../shared/products.service";
+import {ProductsService} from "../../shared/Product-Service/products.service";
 import {NgForm} from "@angular/forms";
-import {Products} from "../../shared/products.model";
+import {Products} from "../../shared/Product-Service/products.model";
 
 @Component({
   selector: 'app-products-form',
