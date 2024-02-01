@@ -5,6 +5,7 @@ using Backend.Services.SellerService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Web;
 using System.Text.Json.Serialization;
 using System.Text.Json;
@@ -12,6 +13,8 @@ using Backend.Services.OrderService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using Backend.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews()
@@ -21,19 +24,22 @@ builder.Services.AddControllersWithViews()
       options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
 // Add services to the container.
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));*/
+
 
 builder.Services.AddDbContext<BackendContext>(options =>
                 options.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=Backend;Integrated Security=True"));
+builder.Services.AddIdentityApiEndpoints<ApplicationUser>().AddRoles<IdentityRole>()
+  .AddEntityFrameworkStores<BackendContext>();
+
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<ISellerService, SellerService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<IdentityUser>().AddRoles<IdentityRole>()
-  .AddEntityFrameworkStores<BackendContext>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -57,8 +63,9 @@ if (app.Environment.IsDevelopment())
   app.UseSwagger();
   app.UseSwaggerUI();
 }
-app.MapIdentityApi<IdentityUser>();
+
 app.UseHttpsRedirection();
+app.MapIdentityApi<ApplicationUser>();
 
 app.UseAuthorization();
 
@@ -73,22 +80,26 @@ using(var scope  = app.Services.CreateScope())
       await roleManager.CreateAsync(new IdentityRole(role));
   }
 }
+
 using (var scope = app.Services.CreateScope())
 {
 
-  var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-  string email = "admin@admin.com";
+  var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+  string email = "adminel@admin.com";
   string password = "Cerebel1233@";
   if(await userManager.FindByEmailAsync(email) == null)
   {
-    var user = new IdentityUser();
+    var user = new ApplicationUser();
     user.UserName = email;
     user.Email = email;
     user.EmailConfirmed = true;
     await userManager.CreateAsync(user);
     await userManager.AddToRoleAsync(user, "Admin");
-
+    var isAdmin = await userManager.IsInRoleAsync(user, "Admin");
+    Console.WriteLine(isAdmin);
   }
+
+  
 }
 
 app.Run();
