@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Models;
 using Backend.Services.ClientService;
+using Microsoft.AspNetCore.Identity;
+using ServerApp.Models;
 
 namespace Backend.Controllers
 {
@@ -16,11 +18,14 @@ namespace Backend.Controllers
     public class ClientsController : ControllerBase
     {
     private IClientService _clientService;
-    public ClientsController(IClientService clientService) {
+    private readonly UserManager<ApplicationUser> _userManager;
+    public ClientsController(IClientService clientService, UserManager<ApplicationUser> userManager) {
       _clientService = clientService;
+      _userManager = userManager;
 
     }
-        // GET: api/Clients
+   
+  // GET: api/Clients
         [HttpGet]
         public IActionResult GetClients()
         {
@@ -69,6 +74,15 @@ namespace Backend.Controllers
             var clients = _clientService.PostClient(client);
             if(clients == null)
                 return BadRequest();
+    
+              var user = new ApplicationUser { UserName = client.Email, Email = client.Email };
+
+
+              var result = await _userManager.CreateAsync(user, client.Password);
+              if (result.Succeeded)
+                  await _userManager.AddToRoleAsync(user, "Client");
+               
+           
             return Ok(clients);
         }
 

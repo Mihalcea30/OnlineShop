@@ -17,12 +17,7 @@ using Backend.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllersWithViews()
-    .AddJsonOptions(options =>
-    {
-      options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-      options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-    });
+
 // Add services to the container.
 /*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));*/
@@ -33,13 +28,20 @@ builder.Services.AddDbContext<BackendContext>(options =>
 builder.Services.AddIdentityApiEndpoints<ApplicationUser>().AddRoles<IdentityRole>()
   .AddEntityFrameworkStores<BackendContext>();
 
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+      options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+      options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
+
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<ISellerService, SellerService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddAuthorization();
-
+builder.Services.AddAuthentication();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -86,7 +88,7 @@ using (var scope = app.Services.CreateScope())
 {
 
   var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-  string email = "adminel@admin.com";
+  string email = "admino@admin.com";
   string password = "Cerebel1233@";
   if(await userManager.FindByEmailAsync(email) == null)
   {
@@ -94,7 +96,7 @@ using (var scope = app.Services.CreateScope())
     user.UserName = email;
     user.Email = email;
     user.EmailConfirmed = true;
-    await userManager.CreateAsync(user);
+    await userManager.CreateAsync(user, password);
     await userManager.AddToRoleAsync(user, "Admin");
     var isAdmin = await userManager.IsInRoleAsync(user, "Admin");
     Console.WriteLine(isAdmin);
