@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Models;
 using Backend.Services.SellerService;
+using Microsoft.AspNetCore.Identity;
 
 namespace Backend.Controllers
 {
@@ -15,11 +16,12 @@ namespace Backend.Controllers
     [ApiController]
     public class SellersController : ControllerBase
     {
+    private readonly UserManager<ApplicationUser> _userManager;
     private ISellerService _sellerService;
-    public SellersController(ISellerService sellerService)
+    public SellersController(ISellerService sellerService, UserManager<ApplicationUser> userManager)
     {
       _sellerService = sellerService;
-
+      _userManager = userManager;
     }
 
     // GET: api/Sellers
@@ -70,8 +72,14 @@ namespace Backend.Controllers
         public async Task<ActionResult<Seller>> PostSeller(Seller seller)
         {
             var sellers = _sellerService.PostSeller(seller);
-      if (sellers == null)
-        return BadRequest();
+            if (sellers == null)
+              return BadRequest();
+            var user = new ApplicationUser { UserName = seller.Email, Email = seller.Email };
+
+
+            var result = await _userManager.CreateAsync(user, seller.Password);
+            if (result.Succeeded)
+              await _userManager.AddToRoleAsync(user, "Client");
       return Ok(sellers);
 
     }
