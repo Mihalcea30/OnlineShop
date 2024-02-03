@@ -19,7 +19,7 @@
         <div class = "flex-grow-1 mouse-hover"
         (click)="populateForm(pd)">
         <div class="fw-bold">{{pd.product_Name}}</div>
-        <div class="fw-bold">{{pd.price}} lei</div>
+        <div class="fw-bold">{{pd.price | priceInRon}} lei</div>
         </div>
         <span class = "text-secondary">
         <i class="fa-solid fa-trash-can" (click)="onDelete(pd.product_Id)"></i>

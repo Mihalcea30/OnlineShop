@@ -1,8 +1,10 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark">
   <div class="navbar-nav">
-    <a class="nav-item nav-link" routerLink="/product">Products</a>
-    <a class="nav-item nav-link" routerLink="/order">Order</a>
-    <a class="nav-item nav-link" routerLink="/register">Register</a>
+    <a class="nav-item nav-link" routerLink="/product" *ngIf="isSeller()" appColor>Products</a>
+    <a class="nav-item nav-link" routerLink="/order" *ngIf="isClient()" appColor>Order</a>
+    <a class="nav-item nav-link" routerLink="/register" appColor>Register</a>
+    <a class="nav-item nav-link" routerLink="/login" *ngIf="!isLoggedIn()" appColor>Log in</a>
+    <a class="nav-item nav-link" routerLink="/login" (click)="logout()" *ngIf="isLoggedIn()" appColor>Log out</a>
   </div>
 </nav>
 <router-outlet></router-outlet>

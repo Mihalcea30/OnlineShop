@@ -13,7 +13,7 @@ export class SellerService {
   list:Seller[] = []
   seller : Seller = new Seller()
   constructor(private http: HttpClient) { }
-  postProduct(){
+  postSeller(){
     return this.http.post(this.url,this.seller).subscribe({
       next : res => {console.log(res)},
       error : err => {console.log(err)}

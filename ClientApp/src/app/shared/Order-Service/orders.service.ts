@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import {environment} from "../../../environments/environment.development";
 import {Products} from "../Product-Service/products.model";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Orders} from "./orders.model";
+import {LoginService} from "../Login-Service/login.service";
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class OrdersService {
   orderlist:Orders[] = []
   order : Orders = new Orders()
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private loginservice:LoginService) { }
   refreshList(){
     this.http.get(this.product_url)
       .subscribe({
@@ -23,6 +25,10 @@ export class OrdersService {
       })
   }
   refreshOrderList(){
+    const token = localStorage.getItem('token');
+
+    // Include token in the Authorization header
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     this.http.get(this.order_url)
       .subscribe({
         next : res => {this.orderlist = res as Orders[]},
