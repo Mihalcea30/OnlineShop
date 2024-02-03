@@ -79,8 +79,8 @@ namespace Backend.Controllers
 
             var result = await _userManager.CreateAsync(user, seller.Password);
             if (result.Succeeded)
-              await _userManager.AddToRoleAsync(user, "Client");
-      return Ok(sellers);
+              await _userManager.AddToRoleAsync(user, "Seller");
+      return Ok(seller);
 
     }
 

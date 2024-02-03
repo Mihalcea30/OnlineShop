@@ -9,6 +9,7 @@ import {FormsModule} from "@angular/forms";
 import { OrdersComponent } from './orders/orders.component';
 import { MakeOrderComponent } from './Orders/make-order/make-order.component';
 import {appRoutingModule} from "./app.routing";
+import { RegisterSellerComponent } from './Register/register-seller/register-seller.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {appRoutingModule} from "./app.routing";
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    appRoutingModule
+    appRoutingModule,
+    RegisterSellerComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -10,6 +10,7 @@ namespace Backend.Controllers
   
   [Route("api/[controller]")]
   [ApiController]
+  [Authorize(Roles = "Client")]
   
   public class OrdersController : ControllerBase
   {
